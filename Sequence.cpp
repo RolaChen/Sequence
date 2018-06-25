@@ -1,6 +1,7 @@
 #include"Sequence.h"
 #include<cstring>
 #include<fstream>
+#include<time.h>
 
 Sequence::Sequence(string filename)
 {
@@ -8,6 +9,7 @@ Sequence::Sequence(string filename)
   string a;
   while(getline(file,a))
     dna+=a;
+  leng=dna.length();
 }
 
 Sequence::~Sequence()
@@ -17,13 +19,11 @@ Sequence::~Sequence()
 
 int Sequence::length()
 {
-  int n=dna.length();
-  return n;
+  return leng;
 }
 
 int Sequence::numberOf(char base)
 {
-  int leng=dna.length();
   int n=0;
   for(int i=0;i<leng;i++)
     if(dna[i]==base)
@@ -36,7 +36,6 @@ string Sequence::longestConsecutive()
   bool start=1;
   bool who=1; //who=1 represent a1; who=0 represent a2
   string a1,a2;
-  int leng=dna.length();
   for(int i=0;i<leng;i++)
   {
      if(start)
@@ -69,6 +68,7 @@ string Sequence::longestConsecutive()
        }   
      }
   }
+
   if(a1.length()>a2.length())
     return a1;
   else if(a1.length()<a2.length()) 
@@ -85,6 +85,24 @@ string Sequence::longestConsecutive()
 string Sequence::longestRepeated()
 {
   string a;
+  int n,m;
+  int longest=0;
+  int k=0;
+  int intext;
+  for(int i=0;i<leng;i++)
+  {
+    for(int j=i+1;j<leng;j++)
+    {
+      n=i;
+      m=j;
+      while(dna[n++]==dna[m++]&&n<=leng&&m<=leng)
+        k++;
+      if(k>longest)
+        longest=k,intext=i;
+      k=0;
+    }
+  }
+  a=dna.substr(intext,longest);
   return a;
 }
 
