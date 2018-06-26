@@ -5,8 +5,7 @@
 #include<algorithm>
 #include<time.h>
 
-int comlen(const char*, const char*);
-int cmpl(const void*, const void*);
+int compare(const void*, const void*);
 
 Sequence::Sequence(string filename)
 {
@@ -92,40 +91,36 @@ char* s[2000000];
 string Sequence::longestRepeated()
 {
   for(int i=0;i<leng;i++)
-    {
-      a[i]=dna[i];
-      s[i]=&a[i];
-    }
-  qsort(s,leng,sizeof(char*),cmpl);//待排序数组，数组长度，各元素所占空间大小，比较函数
+  {
+    a[i]=dna[i];
+    s[i]=&a[i];
+  }
+  qsort(s,leng,sizeof(char*),compare);//待排序数组，数组长度，各元素所占空间大小，比较函数
   int longest=0,intext;
   for(int i=0;i<leng-1;i++)
   {
-    int k=comlen(s[i],s[i+1]);
-    if(k>longest)
-    longest=k,intext=i;
+    int n=0;
+    while(s[i]!=NULL&&s[i+1]!=NULL&&(*s[i])==(*s[i+1]))
+    {
+      s[i]++;
+      s[i+1]++;
+      n++;
+    }
+    if(n>longest)
+    longest=n,intext=i;
   } 
-  string b; 
-  char c[10000];
-  strncpy(c,s[intext],longest);//拷贝到的数组，拷贝的起始地址，长度
-  b=c;
+  string b;
+  for(int i=0;i<longest;i++)
+  {
+    b+=(*s[intext]);
+    s[intext]++;
+  }
   return b;
 }
 
-int cmpl(const void* p,const void* q)//返回值<0,则，前一个元素放在前面
+int compare(const void* p,const void* q)//返回值<0,则，前一个元素放在前面
 {
   return strcmp(*(char **)p, *(char **)q);//比较string的大小，如果前一个小于后一个，返回-1
-}
-
-int comlen (const char* s1, const char* s2)
-{
-  int n=0;
-  while(s1!=NULL&&s2!=NULL&&(*s1)==(*s2))
-  {
-    s1++;
-    s2++;
-    n++;
-  } 
-  return n;
 }
 
 
