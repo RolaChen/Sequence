@@ -15,5 +15,6 @@ class Sequence
     string longestRepeated();
   private:
     string dna;
+    int leng;
 };
 #endif
