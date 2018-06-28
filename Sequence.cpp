@@ -4,12 +4,19 @@
 #include<vector>
 #include<algorithm>
 #include<time.h>
+#include<cstdlib>
 
 int compare(const void*, const void*);
+int coml(const char* ,const char*);
 
 Sequence::Sequence(string filename)
 {
   ifstream file(filename.c_str(),ios::in);
+  if(!file)
+  {
+    cerr<<"The file can't be open!"<<endl;
+    exit(EXIT_FAILURE);
+  }
   string a;
   while(getline(file,a))
     dna+=a;
@@ -99,13 +106,7 @@ string Sequence::longestRepeated()
   int longest=0,intext;
   for(int i=0;i<leng-1;i++)
   {
-    int n=0;
-    while(s[i]!=NULL&&s[i+1]!=NULL&&(*s[i])==(*s[i+1]))
-    {
-      s[i]++;
-      s[i+1]++;
-      n++;
-    }
+    int n=coml(s[i],s[i+1]);
     if(n>longest)
     longest=n,intext=i;
   } 
@@ -124,4 +125,15 @@ int compare(const void* p,const void* q)//返回值<0,则，前一个元素放�
 }
 
 
+int coml(const char* s1,const char* s2)
+{
+  int n=0;
+  while(s1!=NULL&&s2!=NULL&&(*s1)==(*s2))
+  {
+    s1++;
+    s2++;
+    n++;
+  }
+   return n;
+}
 
