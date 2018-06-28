@@ -42,7 +42,7 @@ int Sequence::numberOf(char base)
   return n;
 }
 
-string Sequence::longestConsecutive()
+/*string Sequence::longestConsecutive()
 {
   bool start=1;
   bool who=1; //who=1 represent a1; who=0 represent a2
@@ -92,6 +92,7 @@ string Sequence::longestConsecutive()
       return a2;
    }
 }
+*/
 
 char a[2000000];
 char* s[2000000];
@@ -124,7 +125,6 @@ int compare(const void* p,const void* q)//返回值<0,则，前一个元素放�
   return strcmp(*(char **)p, *(char **)q);//比较string的大小，如果前一个小于后一个，返回-1
 }
 
-
 int coml(const char* s1,const char* s2)
 {
   int n=0;
@@ -137,3 +137,36 @@ int coml(const char* s1,const char* s2)
    return n;
 }
 
+
+
+string Sequence::longestConsecutive()
+{
+  int i=0,n=1,longest=0;
+  char sign=dna[0];
+  while(i<leng-1)
+  {
+    if(dna[i+1]==dna[i])
+      i++,n++;
+    else 
+      {
+        if(n>longest)
+          longest=n,sign=dna[i];
+        if(dna[i+1]==dna[i+longest]==dna[i+longest+1])
+          n=1, i++;
+        else
+          {
+             n=1, i=i+longest+1;
+             for(int j=i;;j--)
+              { 
+                if(dna[j-1]==dna[j])
+                  n++;
+                else break;
+              }
+          }
+      }
+  }
+  string b;
+  for(int i=0;i<longest;i++)
+    b+=sign;
+  return b;
+}
